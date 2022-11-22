@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
+const db = require("./config/db");
 dotenv.config();
 
 const app = express();
@@ -34,7 +35,15 @@ app.use(
 );
 
 app.get("/api/host", (req, res) => {
-  res.send({ host: "kjk" });
+  db.query("SELECT * FROM users", (err, data) => {
+    if (!err) {
+      console.log(data);
+      res.send({ host: data[0].userName });
+    } else {
+      console.log(err);
+      res.send({ host: "데이터 없졍" });
+    }
+  });
 });
 
 app.listen(app.get("port"), () => {
