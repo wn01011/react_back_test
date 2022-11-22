@@ -1,11 +1,11 @@
-import express from "express";
-import session from "express-session";
-import morgan from "morgan";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import path from "path";
-import multer from "multer";
-import fs from "fs";
+const express = require("express");
+const session = require("express-session");
+const morgan = require("morgan");
+const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
+const path = require("path");
+const multer = require("multer");
+const fs = require("fs");
 dotenv.config();
 
 const app = express();
@@ -15,8 +15,6 @@ app.set("port", process.env.PORT);
 app.use((req, res, next) => {
   morgan("dev")(req, res, next);
 });
-
-app.use("/", express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,6 +33,10 @@ app.use(
   })
 );
 
+app.get("/api/host", (req, res) => {
+  res.send({ host: "kjk" });
+});
+
 app.listen(app.get("port"), () => {
-  console.log("서버열었다.");
+  console.log(app.get("port") + "서버열었다.");
 });
